@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MainAppLayout from '../components/layout/MainAppLayout';
 import PageHeader from '../components/TaskManagement/PageHeader';
 import TaskList from '../components/TaskManagement/TaskList';
@@ -26,11 +26,47 @@ type AuthStep = 'fingerprint' | 'face' | 'authenticated';
 
 const IndexPage: React.FC = () => {
   const [authStep, setAuthStep] = useState<AuthStep>('fingerprint');
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: 1, text: 'Finish MLO project report', completed: false },
-    { id: 2, text: 'Buy groceries for the week', completed: false },
-    { id: 3, text: 'Schedule dentist appointment', completed: true },
-  ]);
+
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    // Lazy initializer to load tasks from localStorage on first render
+    if (typeof window === 'undefined') {
+      // Return default tasks if not in a browser environment
+      return [
+        { id: 1, text: 'Finish MLO project report', completed: false },
+        { id: 2, text: 'Buy groceries for the week', completed: false },
+        { id: 3, text: 'Schedule dentist appointment', completed: true },
+      ];
+    }
+    try {
+      const savedTasks = window.localStorage.getItem('tasks');
+      if (savedTasks) {
+        const parsedTasks = JSON.parse(savedTasks);
+        if (Array.isArray(parsedTasks)) {
+          return parsedTasks;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load tasks from localStorage', error);
+    }
+    // Fallback to default tasks
+    return [
+      { id: 1, text: 'Finish MLO project report', completed: false },
+      { id: 2, text: 'Buy groceries for the week', completed: false },
+      { id: 3, text: 'Schedule dentist appointment', completed: true },
+    ];
+  });
+
+  // Effect to save tasks to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        window.localStorage.setItem('tasks', JSON.stringify(tasks));
+      } catch (error) {
+        console.error('Failed to save tasks to localStorage', error);
+      }
+    }
+  }, [tasks]);
+
 
   const handleAddTask = (text: string) => {
     if (text.trim() === '') return;
