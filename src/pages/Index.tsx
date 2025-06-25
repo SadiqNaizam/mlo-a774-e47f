@@ -1,14 +1,22 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import React from 'react';
+import MainAppLayout from '../components/layout/MainAppLayout';
+import PageHeader from '../components/TaskManagement/PageHeader';
+import TaskList from '../components/TaskManagement/TaskList';
 
-const Index = () => {
+/**
+ * IndexPage serves as the main entry point for the To-Do List application.
+ * It composes the overall page structure by using the MainAppLayout,
+ * populating the header with the PageHeader component and the main content
+ * area with the TaskList component.
+ */
+const IndexPage: React.FC = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <MainAppLayout
+      headerContent={<PageHeader />}
+    >
+      <TaskList />
+    </MainAppLayout>
   );
 };
 
-export default Index;
+export default IndexPage;
