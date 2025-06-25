@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import MainAppLayout from '../components/layout/MainAppLayout';
 import PageHeader from '../components/TaskManagement/PageHeader';
 import TaskList from '../components/TaskManagement/TaskList';
-import { FingerprintAuth } from '@/components/auth/FingerprintAuth';
-import { FaceAuth } from '@/components/auth/FaceAuth';
+import { FingerprintAuth } from '@/components/auth/fingerprintauth';
+import { FaceAuth } from '@/components/auth/faceauth';
 
 /**
  * IndexPage serves as the main entry point for the To-Do List application.
